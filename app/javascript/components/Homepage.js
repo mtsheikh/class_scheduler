@@ -45,6 +45,7 @@ import {
 import formatLink from './utils/Link';
 import SignUpSchema from './schema/SignUpSchema';
 import contactInfo from '../ContactInfo';
+import UserMap from './UserMap';
 
 const pageContent = {
   featuredPrograms: {
@@ -288,19 +289,11 @@ class Homepage extends Component {
   }
 
   renderWhereWeAre() {
-    const size = 60;
     return(
       this.renderElementContainer(
         pageContent.whereWeAre,
-        (
-          <div>
-            <p>
-              Content coming soon!
-            </p>
-            <FaWrench size={ size } />
-          </div>
-      ))
-    );
+        (<UserMap />)
+    ));
   }
 
   renderJoinUs() {
