@@ -41,6 +41,7 @@ import validate from 'react-joi-validation';
 import PropTypes from 'prop-types';
 
 import SliderButton from './reusable/withStyles/StyledSliderButton';
+import TestimonialsCarousel from './TestimonialsCarousel';
 import {
   ENGLISH,
   SPANISH
@@ -51,51 +52,105 @@ import contactInfo from '../ContactInfo';
 import UserMap from './UserMap';
 
 const pageContent = {
+  testimonials: [
+    {
+      names: 'Yaquelin',
+      es_names: 'Yaquelin',
+      role: 'English Client',
+      es_role: 'Clienta de Inglés',
+      location: 'Venezuela',
+      quote: '',
+      es_quote: '',
+      img_src: 'https://s3.amazonaws.com/elasticbeanstalk-us-east-1-853357102893/testimonials/yaquelin.jpg',
+      video: false,
+      video_src: '',
+    },
+    {
+      names: 'Irma and Mirella',
+      es_names: 'Irma y Mirella',
+      role: 'Citizenship Client and Volunteer',
+      es_role: 'Clienta y Voluntaria de Ciudadanía',
+      location: 'New York, NY',
+      quote: 'Irma: I felt very comfortable and grateful for Tutoria\'s help. I give them five stars!\n' +
+             'Mirella: Tutoria is an excellent program because I set my own hours and have an opportunity to practice my Spanish. Also, Tutoria\'s staff is kind and really wants to help people.',
+      es_quote: 'Irma: Me sentí muy cómoda y agradecida por la ayuda de Tutoria. ¡Les doy cinco estrellas!\n' +
+                'Mirella: Tutoría es un programa excelente porque yo establezco mi horario y tengo una oportunidad para practicar mi español. Además, los administradores/as son amables y realmente quieren ayudar a la gente.',
+      img_src: 'https://s3.amazonaws.com/elasticbeanstalk-us-east-1-853357102893/testimonials/IrmaandMirella.jpg',
+      video: false,
+      video_src: '',
+    },
+    {
+      names: 'Amilcar and Dane',
+      es_names: 'Amilcar y Dane',
+      role: 'Citizenship Client and Volunteer',
+      es_role: 'Cliente y Voluntario de Ciudadanía',
+      location: 'New York, NY',
+      quote: 'Amilcar: Tutoria volunteers are very organized and professional. I would definitely recommend them.\n' +
+             'Dane: Tutoria is a fantastic organization with a really positive mission. I\'ve really enjoyed working with Amilcar. It\'s exciting seeing the progress he\'s made, and I\'m looking forward to continuing our work together.',
+      es_quote: 'Amilcar: Los voluntarios/as de Tutoria son muy organizados y profesionales. Yo definitivamente los recomendaría.\n' +
+                'Dane: Tutoria es una organización fantástica con un objetivo realmente positivo. Realmente disfruté ayudar a Amilcar. Es emocionante ver el progreso que el ha realizado, y espero continuar nuestros estudios juntos.',
+      img_src: 'https://s3.amazonaws.com/elasticbeanstalk-us-east-1-853357102893/testimonials/AmilcarandDane.jpeg',
+      video: false,
+      video_src: '',
+    },
+    {
+      names: 'Glenis',
+      es_names: 'Glenis',
+      role: 'Citizenship Client',
+      es_role: 'Clienta de Ciudadanía',
+      location: 'New York, NY',
+      quote: 'Excellent program - good volunteers in English and Spanish. I recommend it to all. Their English and citizenship classes are totally free!',
+      es_quote: 'Excelente programa - buenos voluntarios/as en inglés y español. Lo recomiendo a todos/as. Sus clases de ciudadanía y de inglés son totalmente gratis.',
+      img_src: 'https://s3.amazonaws.com/elasticbeanstalk-us-east-1-853357102893/testimonials/glenis.jpg',
+      video: false,
+      video_src: '',
+    },
+  ],
   featuredPrograms: {
     name: 'featuredPrograms',
-    header: 'Featured Programs',
-    subtitle: 'Below are our featured programs!',
+    header: 'Programs.featuredPrograms',
+    subtitle: '',
   },
   howItWorks: {
     name: 'howItWorks',
-    header: 'How it Works',
-    subtitle: 'The stages of an avarage interaction are shown below!',
+    header: 'Homepage.list',
+    subtitle: '',
     howItWorksStages: [
       {
         icon: (<MdTouchApp size={ 60 } />),
         title: 'clientPost',
-        description: 'Clients post what they need help with, such as English language tutoring.'
+        description: 'Homepage.listItem1'
       },
       {
         icon: (<FaPeopleCarry size={ 60 } />),
         title: 'volunteerPost',
-        description: 'Volunteers post what they can help with.'
+        description: 'Homepage.listItem2'
       },
       {
         icon: (<FaInbox size={ 60 } />),
         title: 'contact',
-        description: 'Clients contact volunteers matching their needs and availability.'
+        description: 'Homepage.listItem3'
       },
       {
         icon: (<FaAward size={ 60 } />),
         title: 'review',
-        description: 'After working together, volunteers and clients review each other.'
+        description: 'Homepage.listItem4'
       },
     ],
   },
   whereWeAre: {
     name: 'whereWeAre',
-    header: 'Where We Are',
+    header: 'Homepage.whereWeAre',
     subtitle: ''
   },
   joinUs: {
     name: 'joinUs',
-    header: 'Join Us',
-    subtitle: 'Just fill out the form below to get started!'
+    header: 'Homepage.joinUs',
+    subtitle: 'Homepage.fillOutForm'
   },
   needHelp: {
-    name: 'joinUs',
-    header: 'Need Help?'
+    name: 'needHelp',
+    header: 'Homepage.needHelp'
   }
 };
 
@@ -145,7 +200,10 @@ class Homepage extends Component {
   render() {
     return (
       <div className='homepageMainContainer'>
-        { this.renderSplash() }
+        <span className='splashObjects'>
+          { this.renderSplash() }
+          { this.renderTestimonials() }
+        </span>
         { this.renderFeaturedPrograms() }
         { this.renderHowItWorks() }
         { this.renderWhereWeAre() }
@@ -155,17 +213,37 @@ class Homepage extends Component {
     );
   }
 
+  renderTestimonials() {
+    return(
+      <div className='testimonialsContainer'>
+        <p className='testimonialsSubtitle'>
+          <FormattedMessage
+            id="Testimonial.clickImage"
+          />
+        </p>
+        <TestimonialsCarousel data={ pageContent.testimonials } />
+      </div>
+    );
+  }
+
   renderSplash() {
     return(
       <div className='splashContainer'>
         <h1 className='spashHeader'>
-          Connect and share with our community of clients and volunteers
+          <FormattedMessage
+            id="Homepage.subtitle"
+            defaultMessage="Connect and share with our community of clients and volunteers"
+          />
         </h1>
         <p>
-          We&apos;re an all-volunteer team inspired by the impact of free tutoring in our local communities. We&apos;ve seen the challenges in meeting people who need our help or arranging where and when to meet. Our clients would say the same thing.
+          <FormattedMessage
+            id="Homepage.subsubtitle"
+          />
         </p>
         <p className='orangeText'>
-          If you have any questions, please email or call us. We will be glad to help you!
+          <FormattedMessage
+            id="Homepage.emailOrCall"
+          />
         </p>
         { this.renderContactButtons() }
         <Fab
@@ -222,10 +300,19 @@ class Homepage extends Component {
     return(
       <div className={ content.name+'Container' }>
         <h2 className={ content.name+'Header' }>
-          { content.header }
+          <FormattedMessage
+            id={ content.header }
+          />
         </h2>
         <p className={ content.name+'Subtitle' }>
-          { content.subtitle }
+          {
+            content.subtitle &&
+            (
+              <FormattedMessage
+                id={ content.subtitle }
+              />
+            )
+          }
         </p>
         <div className={ content.name+'ContentContainer' }>
           { children }
@@ -294,7 +381,9 @@ class Homepage extends Component {
                     { element.icon }
                   </span>
                   <p>
-                    { element.description }
+                    <FormattedMessage
+                      id={ element.description }
+                    />
                   </p>
                 </span>
                 <span className='cardIndexSpan'>
@@ -441,7 +530,9 @@ class Homepage extends Component {
           <ExpansionPanel>
             <ExpansionPanelSummary expandIcon={ <FaCaretDown /> }>
               <p className='languageSelectorTitle'>
-                Website & Notification Language
+                <FormattedMessage
+                  id='UserForm.locale'
+                />
               </p>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
@@ -499,7 +590,7 @@ class Homepage extends Component {
                   checkedIcon={ <FaRegDotCircle className='radioButtonCheckedCircle' size={ size } /> }
                 />
               ) }
-              label="Client"
+              label={ <FormattedMessage id='client' /> }
               checked={ this.state.signUpType === 'client' }
             />
             <FormControlLabel
@@ -510,7 +601,7 @@ class Homepage extends Component {
                   checkedIcon={ <FaRegDotCircle className='radioButtonCheckedCircle' size={ size } /> }
                 />
               ) }
-              label="Volunteer"
+              label={ <FormattedMessage id='volunteer' /> }
               checked={ this.state.signUpType === 'volunteer' }
             />
           </RadioGroup>
@@ -533,8 +624,7 @@ class Homepage extends Component {
             onClick={ (event) => { this.handleScroll(event, 0); this.handleSubmit; } }
             >
             <FormattedMessage
-              id='ReviewContainer.SubmitButton'
-              defaultMessage='Submit'
+              id='Homepage.joinUsSubmit'
             />
           </Fab>
         </span>
@@ -546,10 +636,14 @@ class Homepage extends Component {
     return(
       <div className='needHelpContainer'>
         <h2 className='needHelpHeader'>
-          { pageContent.needHelp.header }
+          <FormattedMessage
+            id={ pageContent.needHelp.header }
+          />
         </h2>
         <p className='needHelpSubtitle'>
-          Please call or send an email. Also check our
+          <FormattedMessage
+            id='Homepage.askForHelp'
+          />
           { ' ' }
           { <Link to={ formatLink('/FAQ', this.state.languageChecked) }>FAQ</Link> }
           .
@@ -568,12 +662,13 @@ Homepage.propTypes = {
   validateHandler: PropTypes.func.isRequired,
   first_name: PropTypes.string,
   email: PropTypes.string,
-  programs: PropTypes.array.isRequired,
+  programs: PropTypes.array,
 };
 
 Homepage.defaultProps = {
   first_name: '',
-  email: ''
+  email: '',
+  programs: [],
 };
 
 const validationOptions = {

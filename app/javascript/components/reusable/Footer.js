@@ -84,14 +84,14 @@ class Footer extends Component {
             <b>Address</b>
             495A Henry St #1020
             <br />
-            Brookyln, NY, 11231,
+            Brooklyn, NY, 11231,
             <br />
             United States of America
           </span>
           <span className='footerContact'>
             <b>Contact</b>
             <a href={ 'tel:'+contactInfo.PHONE }>
-              Tel: +1-202-555-0159
+              { 'Tel: '+contactInfo.PHONE }
             </a>
             <a href={ 'mailto:'+contactInfo.EMAIL }>
               Email: admin@tutoria.io
