@@ -7,7 +7,6 @@ import {
   FaPeopleCarry,
   FaInbox,
   FaAward,
-  FaWrench,
   FaCaretDown,
   FaCheck,
   FaRegDotCircle,
@@ -28,8 +27,12 @@ import {
   ExpansionPanelSummary,
   Button,
   Radio,
+  Switch,
   RadioGroup,
   FormControlLabel,
+  FormGroup,
+  Grid,
+  ButtonGroup
 } from '@material-ui/core';
 import {
   Link
@@ -102,6 +105,8 @@ class Homepage extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
+    this.handleMapView = this.handleMapView.bind(this);
+    this.handleUserToggle = this.handleUserToggle.bind(this);
 
     this.joinUsFormRef = React.createRef();
 
@@ -109,6 +114,9 @@ class Homepage extends Component {
       languageChecked: ENGLISH,
       signUpType: 'client',
       locale: localStorage.getItem('locale'),
+      mapView: 'row',
+      clientsSelected: true,
+      volunteersSelected: true,
     };
   }
 
@@ -119,6 +127,19 @@ class Homepage extends Component {
 
   handleScroll(verticalScrollPosition) {
     window.scrollTo(0, verticalScrollPosition);
+  }
+
+  handleMapView() {
+    this.state.mapView === 'row'
+    ?
+    this.setState({ mapView: 'usa' })
+    :
+    this.setState({ mapView: 'row' });
+  }
+
+  handleUserToggle(stateToChange, prevState) {
+    const newState = !prevState;
+    this.setState({ [stateToChange]: newState });
   }
 
   render() {
@@ -292,8 +313,80 @@ class Homepage extends Component {
     return(
       this.renderElementContainer(
         pageContent.whereWeAre,
-        (<UserMap />)
+        this.renderWhereWeAreComponents()
     ));
+  }
+
+  renderWhereWeAreComponents() {
+    return(
+      <div className='whereWeAreComponentsContainer'>
+        <FormGroup>
+          <Grid item>
+            <ButtonGroup
+              variant="contained"
+              size="large"
+            >
+              <Button
+                className={ 'userSelectClientsButton'+this.state.clientsSelected }
+                onClick={ () => this.handleUserToggle('clientsSelected', this.state.clientsSelected) }
+              >
+                <FormattedMessage
+                  id='HomePage.UserSelectClients'
+                  default='Clients'
+                />
+              </Button>
+              <Button
+                className={ 'userSelectVolunteersButton'+this.state.volunteersSelected }
+                onClick={ () => this.handleUserToggle('volunteersSelected', this.state.volunteersSelected) }
+              >
+                <FormattedMessage
+                  id='HomePage.UserSelectVolunteers'
+                  default='Volunteers'
+                />
+              </Button>
+            </ButtonGroup>
+          </Grid>
+          <FormControlLabel
+            control={
+              (
+                <Switch
+                  checked={ this.state.mapView==='row' }
+                  onChange={ this.handleMapView }
+                  value={ this.state.mapView }
+                  color='primary'
+                  inputProps={ { 'aria-label': 'Map View Switch' } }
+                />
+              )
+            }
+            label={
+              (
+                this.state.mapView==='row'
+                ?
+                (
+                  <p>
+                    <FormattedMessage
+                      id='Homepage.MapViewROW'
+                      default='World'
+                    />
+                  </p>
+                )
+                :
+                (
+                  <p>
+                    <FormattedMessage
+                      id='Homepage.MapViewUSA'
+                      default='USA'
+                    />
+                  </p>
+                )
+              )
+            }
+            labelPlacement='end'
+          />
+        </FormGroup>
+        <UserMap view={ this.state.mapView } users={ this.state.users } />
+      </div>
+    );
   }
 
   renderJoinUs() {
